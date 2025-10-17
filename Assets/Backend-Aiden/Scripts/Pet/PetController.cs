@@ -24,12 +24,12 @@ public class PetController : MonoBehaviour
 
     private void OnEnable()
     {
-        meterEvent.OnEventRaised += HandleMeterAdjust;
+        meterEvent.Subscribe(HandleMeterAdjust);
     }
 
     private void OnDisable()
     {
-        meterEvent.OnEventRaised -= HandleMeterAdjust;
+        meterEvent.Unsubscribe(HandleMeterAdjust);
     }
     void Start()
     {
@@ -56,6 +56,7 @@ public class PetController : MonoBehaviour
 
     private void HandleMeterAdjust(PetMeterAdjust adjust)
     {
+        Debug.Log($"Adjusting {adjust.meter} by {adjust.amount}");
         switch (adjust.meter)
         {
             case PetMeter.Hunger:

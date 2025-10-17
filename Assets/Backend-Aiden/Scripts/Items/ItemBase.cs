@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
@@ -9,14 +10,21 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 [RequireComponent(typeof(Collider2D))]
 public class ItemBase : MonoBehaviour
 {
-    [SerializeField] private Dictionary<PetMeter, float> meterAdjustments = new Dictionary<PetMeter, float>();
+    [SerializeField] private int itemID;
+
+    [SerializeField] private List<RoomEnum> usableInRooms = new List<RoomEnum>();
+
+    [SerializeField] private PetMeter[] affectedMeters;
+    [SerializeField] private float[] meterAdjustmentValues;
     [SerializeField] private PetMeterAdjustEvent petMeterEvent;
 
     private bool isOverPet = false;
 
+    private Vector3 startPosition;
+
     void Start()
     {
-
+        startPosition = transform.position;
     }
 
     void Update()
@@ -41,18 +49,30 @@ public class ItemBase : MonoBehaviour
 
     private void ReleaseFinger()
     {
-        if (isOverPet)
+        if (isOverPet && usableInRooms.Contains(FindFirstObjectByType<GameController>().CurrentRoom))
         {
-            foreach (var adjustment in meterAdjustments)
+            for (int i = 0; i < affectedMeters.Length; i++)
             {
+                if (i >= meterAdjustmentValues.Length)
+                {
+                    Debug.LogWarning($"ItemBase on {gameObject.name} has mismatched affectedMeters and meterAdjustmentValues lengths.");
+                    break;
+                }
+
                 PetMeterAdjust petMeterAdjust = new PetMeterAdjust
                 {
-                    meter = adjustment.Key,
-                    amount = adjustment.Value
+                    meter = affectedMeters[i],
+                    amount = meterAdjustmentValues[i]
                 };
                 petMeterEvent.RaiseEvent(petMeterAdjust);
             }
             Destroy(gameObject);
+        }
+        else
+        {
+            FindFirstObjectByType<GameController>().inventory.AddItem(itemID, 1);
+
+            StartCoroutine(ResetPosition(0.1f));
         }
     }
 
@@ -77,6 +97,23 @@ public class ItemBase : MonoBehaviour
             {
                 isOverPet = false;
             }
+        }
+    }
+
+    private IEnumerator ResetPosition(float distancePerLoop)
+    {
+        yield return new WaitForSeconds(0.001f);
+        Vector3 direction = (startPosition - transform.position).normalized;
+        transform.position += direction * distancePerLoop;
+
+        if (Vector3.Distance(transform.position, startPosition) > distancePerLoop)
+        {
+            StartCoroutine(ResetPosition(distancePerLoop));
+        }
+        else
+        {
+            transform.position = startPosition;
+            Destroy(gameObject);
         }
     }
 }
