@@ -11,6 +11,7 @@ public class PetController : MonoBehaviour
     [SerializeField] private float maxHunger = 100f;
     [SerializeField] private float maxEnergy = 100f;
     [SerializeField] private float maxAffection = 100f;
+    [SerializeField] private float stinkThreshold = 50f;
 
     [SerializeField] private FloatData currentHunger;
     [SerializeField] private FloatData currentEnergy;
@@ -19,16 +20,25 @@ public class PetController : MonoBehaviour
 
     private bool isStinky = false;
 
+    public float MaxHunger { get => maxHunger; }
+    public float MaxEnergy { get => maxEnergy; }
+    public float MaxAffection { get => maxAffection; }
+    public float CurrentHunger { get => currentHunger; }
+    public float CurrentEnergy { get => currentEnergy; }
+    public float CurrentAffection { get => currentAffection; }
+
+    public bool IsStinky { get => isStinky; }
+
     [SerializeField] private PetMeterAdjustEvent meterEvent;
 
     private void OnEnable()
     {
-        meterEvent.OnEventRaised += HandleMeterAdjust;
+        meterEvent.Subscribe(HandleMeterAdjust);
     }
 
     private void OnDisable()
     {
-        meterEvent.OnEventRaised -= HandleMeterAdjust;
+        meterEvent.Unsubscribe(HandleMeterAdjust);
     }
     void Start()
     {
@@ -55,52 +65,46 @@ public class PetController : MonoBehaviour
 
     private void HandleMeterAdjust(PetMeterAdjust adjust)
     {
+        Debug.Log($"Adjusting {adjust.meter} by {adjust.amount}");
         switch (adjust.meter)
         {
             case PetMeter.Hunger:
-                Feed(adjust.amount);
+                currentHunger.Value = Mathf.Clamp(currentHunger + adjust.amount, 0, maxHunger);
                 break;
             case PetMeter.Energy:
                 currentEnergy.Value = Mathf.Clamp(currentEnergy + adjust.amount, 0, maxEnergy);
                 break;
             case PetMeter.Affection:
-                Play(adjust.amount, adjust.energyCost, adjust.stinkAmount);
+                currentAffection.Value = Mathf.Clamp(currentAffection + adjust.amount, 0, maxAffection);
                 break;
             case PetMeter.Stink:
-                Clean(adjust.amount);
+                if (adjust.amount > 0)
+                {
+                    StinkUp(adjust.amount);
+                }
+                else
+                {
+                    Clean(-adjust.amount);
+                }
                 break;
-        }
-    }
-
-    public void Feed(float amount)
-    {
-        currentHunger.Value = Mathf.Min(currentHunger.Value + amount, maxHunger);
-    }
-
-    public void Play(float affectionAmount, float energyCost, float stinkAmount)
-    {
-        if (currentEnergy >= energyCost)
-        {
-            currentAffection.Value = Mathf.Min(currentAffection + affectionAmount, maxAffection);
-            currentEnergy.Value = Mathf.Max(currentEnergy - energyCost, 0);
-            StinkUp(stinkAmount);
         }
     }
 
     private void StinkUp(float stinkAmount)
     {
         currentStink.Value += stinkAmount;
-        if (currentStink.Value > 50)
+        if (currentStink > stinkThreshold)
         {
             isStinky = true;
         }
     }
 
-    public void Clean(float energyRestored)
+    private void Clean(float stinkReduction)
     {
-        currentStink.Value = 0;
-        isStinky = false;
-
-        currentEnergy.Value = Mathf.Min(currentEnergy + energyRestored, maxEnergy);
+        currentStink.Value = Mathf.Max(currentStink - stinkReduction, 0);
+        if (currentStink <= stinkThreshold)
+        {
+            isStinky = false;
+        }
     }
 }
