@@ -20,6 +20,15 @@ public class PetController : MonoBehaviour
 
     private bool isStinky = false;
 
+    public float MaxHunger { get => maxHunger; }
+    public float MaxEnergy { get => maxEnergy; }
+    public float MaxAffection { get => maxAffection; }
+    public float CurrentHunger { get => currentHunger; }
+    public float CurrentEnergy { get => currentEnergy; }
+    public float CurrentAffection { get => currentAffection; }
+
+    public bool IsStinky { get => isStinky; }
+
     [SerializeField] private PetMeterAdjustEvent meterEvent;
 
     private void OnEnable()
