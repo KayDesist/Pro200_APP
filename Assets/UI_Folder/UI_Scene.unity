@@ -3105,7 +3105,7 @@ GameObject:
   - component: {fileID: 1716195557}
   - component: {fileID: 1716195556}
   m_Layer: 0
-  m_Name: UIManager
+  m_Name: UI_Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3123,6 +3123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b5431af70dfbf54da44236efd70c3cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
+  gameController: {fileID: 8174304370032316212, guid: 252fd7794daf19241891399c3b335296, type: 3}
+  itemPrototype: {fileID: 4837190880991364369, guid: b2a3191cffa04bc419c139a328a8a9a5, type: 3}
 --- !u!4 &1716195557
 Transform:
   m_ObjectHideFlags: 0
@@ -3576,7 +3578,7 @@ GameObject:
   - component: {fileID: 1998345334}
   - component: {fileID: 1998345333}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
