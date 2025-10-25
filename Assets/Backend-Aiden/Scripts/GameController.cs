@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class GameController : MonoBehaviour
 {
@@ -17,9 +18,9 @@ public class GameController : MonoBehaviour
         EnhancedTouchSupport.Enable();
     }
 
-    void Update()
+    void Start()
     {
-        
+        CurrentRoom = startingRoom;
     }
 
     public void ChangeRoom(RoomEnum newRoom)
