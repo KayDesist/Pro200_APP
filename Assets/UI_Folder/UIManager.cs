@@ -1,10 +1,26 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameController gameController;
     [SerializeField] private GameObject itemPrototype;
+
+    [SerializeField] private Button toyButton;
+
+    [SerializeField] private Button foodButton;
+    [SerializeField] private Button soapButton;
+
+
+    public void Start()
+    {
+        
+    }
+
 
     /// <summary>
     /// Open up a pop up screen to buy items. Currently just adding 1 of 3 items for the time being.
@@ -67,6 +83,7 @@ public class UIManager : MonoBehaviour
         {
             //instance the item.
             Instantiate(itemPrototype);
+
             //then if the item is used on the pet, remove a count from the item.
             gameController.inventory.RemoveItem(0, 1);
 
