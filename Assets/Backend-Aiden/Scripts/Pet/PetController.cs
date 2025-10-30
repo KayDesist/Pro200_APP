@@ -1,7 +1,10 @@
+using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class PetController : MonoBehaviour
 {
+    [Header("Meter Management")]
     [SerializeField] private float hungerTimerBase = 60f; // Base time in seconds before hunger increases
     [SerializeField] private float energyTimerBase = 120f; // Base time in seconds before dnergy decreases
 
@@ -19,6 +22,7 @@ public class PetController : MonoBehaviour
     [SerializeField] private FloatData currentStink;
 
     private bool isStinky = false;
+    private PetEmotion currentEmotion = PetEmotion.Neutral;
 
     public float MaxHunger { get => maxHunger; }
     public float MaxEnergy { get => maxEnergy; }
@@ -31,6 +35,15 @@ public class PetController : MonoBehaviour
 
     [SerializeField] private PetMeterAdjustEvent meterEvent;
 
+    [Header("Emotion Management")]
+    [SerializeField] private Sprite neutralSprite;
+    [SerializeField] private Sprite happySprite;
+    [SerializeField] private Sprite sadSprite;
+    [SerializeField] private Sprite angrySprite;
+    [SerializeField] private Sprite confusedSprite;
+
+    private SpriteRenderer spriteRenderer;
+
     private void OnEnable()
     {
         meterEvent.Subscribe(HandleMeterAdjust);
@@ -42,6 +55,8 @@ public class PetController : MonoBehaviour
     }
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
         hungerTimer = Random.Range(hungerTimerBase * 0.8f, hungerTimerBase * 1.2f);
         energyTimer = Random.Range(energyTimerBase * 0.8f, energyTimerBase * 1.2f);
     }
@@ -107,4 +122,50 @@ public class PetController : MonoBehaviour
             isStinky = false;
         }
     }
+
+    public void SetEmotion(PetEmotion newEmotion)
+    {
+        currentEmotion = newEmotion;
+        SetSprite();
+
+        StartCoroutine(ResetEmotionCoroutine());
+    }
+
+    private void SetSprite()
+    {
+        switch (currentEmotion)
+        {
+            case PetEmotion.Neutral:
+                spriteRenderer.sprite = neutralSprite;
+                break;
+            case PetEmotion.Happy:
+                spriteRenderer.sprite = happySprite;
+                break;
+            case PetEmotion.Sad:
+                spriteRenderer.sprite = sadSprite;
+                break;
+            case PetEmotion.Angry:
+                spriteRenderer.sprite = angrySprite;
+                break;
+            case PetEmotion.Confused:
+                spriteRenderer.sprite = confusedSprite;
+                break;
+        }
+    }
+
+    private IEnumerator ResetEmotionCoroutine()
+    {
+        yield return new WaitForSeconds(5f);
+        currentEmotion = PetEmotion.Neutral;
+        SetSprite();
+    }
+}
+
+public enum PetEmotion
+{
+    Neutral,
+    Happy,
+    Sad,
+    Angry,
+    Confused
 }
