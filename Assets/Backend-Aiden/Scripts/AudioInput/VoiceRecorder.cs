@@ -10,6 +10,10 @@ public class VoiceRecorder : MonoBehaviour
     private bool isRecording = false;
     private const float chunkDuration = 0.1f; // 100ms
 
+    private string currentTranscription = "";
+
+    [SerializeField] private StringEvent onTranscriptionReceived;
+
     void Start()
     {
         voiceToText = new VoiceToText();
@@ -32,6 +36,8 @@ public class VoiceRecorder : MonoBehaviour
         Microphone.End(null);
         Debug.Log("Recording stopped.");
         StopCoroutine(StreamAudioCoroutine());
+
+        onTranscriptionReceived.RaiseEvent(currentTranscription);
     }
 
     private IEnumerator StreamAudioCoroutine()
@@ -64,6 +70,10 @@ public class VoiceRecorder : MonoBehaviour
                 // Stream to recognizer (if supported)
                 string result = voiceToText.Recognize(audioData, audioData.Length);
                 Debug.Log("Recognition Result: " + result);
+                if (!string.IsNullOrEmpty(result) && result != currentTranscription)
+                {
+                    currentTranscription = result;
+                }
 
                 lastSamplePosition = currentPosition;
             }
