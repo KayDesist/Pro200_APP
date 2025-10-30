@@ -13,7 +13,7 @@ public class PetController : MonoBehaviour
 
     [SerializeField] private float maxHunger = 100f;
     [SerializeField] private float maxEnergy = 100f;
-    [SerializeField] private float maxAffection = 100f;
+    [SerializeField] private float maxAffection = 200f;
     [SerializeField] private float stinkThreshold = 50f;
 
     [SerializeField] private FloatData currentHunger;
@@ -68,6 +68,10 @@ public class PetController : MonoBehaviour
         {
             currentHunger.Value = Mathf.Max(currentHunger - 1, 0);
             hungerTimer = Random.Range(hungerTimerBase * 0.8f, hungerTimerBase * 1.2f);
+            if (currentHunger / maxHunger < 0.2f)
+            {
+                SetEmotion(PetEmotion.Sad, true);
+            }
         }
 
         energyTimer -= Time.deltaTime;
@@ -123,12 +127,25 @@ public class PetController : MonoBehaviour
         }
     }
 
-    public void SetEmotion(PetEmotion newEmotion)
+    public void SetEmotion(PetEmotion newEmotion, bool persistent = false)
     {
         currentEmotion = newEmotion;
+        switch (currentEmotion)
+        {
+            case PetEmotion.Happy:
+                currentAffection.Value = Mathf.Min(currentAffection + 5f, maxAffection);
+                break;
+            case PetEmotion.Sad:
+                currentAffection.Value = Mathf.Max(currentAffection - 5f, 0);
+                break;
+            case PetEmotion.Angry:
+                currentAffection.Value = Mathf.Max(currentAffection - 10f, 0);
+                break;
+        }
+
         SetSprite();
 
-        StartCoroutine(ResetEmotionCoroutine());
+        if (!persistent) StartCoroutine(ResetEmotionCoroutine());
     }
 
     private void SetSprite()
@@ -155,7 +172,7 @@ public class PetController : MonoBehaviour
 
     private IEnumerator ResetEmotionCoroutine()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         currentEmotion = PetEmotion.Neutral;
         SetSprite();
     }

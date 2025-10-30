@@ -277,18 +277,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 32015853297312080, guid: 8cfa0c80984f09a41b8d578f4a8c2fb2, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.2697
-      objectReference: {fileID: 0}
-    - target: {fileID: 32015853297312080, guid: 8cfa0c80984f09a41b8d578f4a8c2fb2, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.2697
-      objectReference: {fileID: 0}
-    - target: {fileID: 32015853297312080, guid: 8cfa0c80984f09a41b8d578f4a8c2fb2, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.2697
-      objectReference: {fileID: 0}
-    - target: {fileID: 32015853297312080, guid: 8cfa0c80984f09a41b8d578f4a8c2fb2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -328,34 +316,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 706692767548352773, guid: 8cfa0c80984f09a41b8d578f4a8c2fb2, type: 3}
-      propertyPath: sadSprite
-      value: 
-      objectReference: {fileID: -3752711834126370623, guid: dcac314a944008c41b68caf125a682de, type: 3}
-    - target: {fileID: 706692767548352773, guid: 8cfa0c80984f09a41b8d578f4a8c2fb2, type: 3}
-      propertyPath: angrySprite
-      value: 
-      objectReference: {fileID: 5964820036452831421, guid: cbdb9c49e6d191843b9d194fb8c5f641, type: 3}
-    - target: {fileID: 706692767548352773, guid: 8cfa0c80984f09a41b8d578f4a8c2fb2, type: 3}
-      propertyPath: happySprite
-      value: 
-      objectReference: {fileID: 7985626363670038235, guid: ae436c7dee7c00d4fb234ae5496d78d9, type: 3}
-    - target: {fileID: 706692767548352773, guid: 8cfa0c80984f09a41b8d578f4a8c2fb2, type: 3}
-      propertyPath: neutralSprite
-      value: 
-      objectReference: {fileID: 3622792381989719942, guid: ca6c09f9bd83cc14cb2064345906d4c3, type: 3}
-    - target: {fileID: 706692767548352773, guid: 8cfa0c80984f09a41b8d578f4a8c2fb2, type: 3}
-      propertyPath: confusedSprite
-      value: 
-      objectReference: {fileID: 594318413343068850, guid: a976b2523217003418f491cdc31fc6cf, type: 3}
     - target: {fileID: 3494917884826112988, guid: 8cfa0c80984f09a41b8d578f4a8c2fb2, type: 3}
       propertyPath: m_Name
       value: Pet
       objectReference: {fileID: 0}
-    - target: {fileID: 7062614660993360556, guid: 8cfa0c80984f09a41b8d578f4a8c2fb2, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 3622792381989719942, guid: ca6c09f9bd83cc14cb2064345906d4c3, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

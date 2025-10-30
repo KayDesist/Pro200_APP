@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2697, y: 0.2697, z: 0.2697}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -60,6 +60,11 @@ MonoBehaviour:
   currentAffection: {fileID: 11400000, guid: b615dbfaa4fec1d4390dcc43770429be, type: 2}
   currentStink: {fileID: 11400000, guid: f98d3fca64a77d549980fe954bda3e48, type: 2}
   meterEvent: {fileID: 11400000, guid: 181071c3410c91e4491d6a80f9a61655, type: 2}
+  neutralSprite: {fileID: 3622792381989719942, guid: ca6c09f9bd83cc14cb2064345906d4c3, type: 3}
+  happySprite: {fileID: 7985626363670038235, guid: ae436c7dee7c00d4fb234ae5496d78d9, type: 3}
+  sadSprite: {fileID: -3752711834126370623, guid: dcac314a944008c41b68caf125a682de, type: 3}
+  angrySprite: {fileID: 5964820036452831421, guid: cbdb9c49e6d191843b9d194fb8c5f641, type: 3}
+  confusedSprite: {fileID: 594318413343068850, guid: a976b2523217003418f491cdc31fc6cf, type: 3}
 --- !u!114 &488757503150540737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +187,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 3622792381989719942, guid: ca6c09f9bd83cc14cb2064345906d4c3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -231,7 +236,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 22.24, y: 16.68}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
