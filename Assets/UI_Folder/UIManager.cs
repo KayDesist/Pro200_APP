@@ -5,28 +5,47 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using UnityEditor.Rendering.Universal;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Controllers")]
     [SerializeField] private GameController gameController;
+    [SerializeField] private PetController petController;
+
+    [Header("Pet Stuff")]
     [SerializeField] private GameObject itemPrototype;
     [SerializeField] private GameObject currentPet;
 
+    [Header("Main UI Buttons")]
     [SerializeField] private Button toyButton;
-
     [SerializeField] private Button foodButton;
     [SerializeField] private Button soapButton;
 
-
+    [Header("Item Examples")]
     [SerializeField] private GameObject soap;
     [SerializeField] private GameObject toy;
     [SerializeField] private GameObject food;
 
-    private GameObject currentItem;
+    [Header("UI Panels")]
+    [SerializeField] private GameObject dimPanel;
+    [SerializeField] private GameObject shopPanel;
+
+    [Header("UI Meter Text")]
+    [SerializeField] private TextMeshProUGUI affectionMeterText;
+    [SerializeField] private TextMeshProUGUI hungerMeterText;
+    [SerializeField] private TextMeshProUGUI energyMeterText;
+
+    //reference to current item instantiated in scene
+    private GameObject currentItem = null;
+
+    //variables
+    private float GameTickTimer = 1.0f;
+    private float currentTimer = 0;
 
     public void Start()
     {
-
+        //
     }
 
 
@@ -35,9 +54,8 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void OnShopButtonPress()
     {
-        addFood();
-        addToy();
-        addSoap();
+        dimPanel.SetActive(true);
+        shopPanel.SetActive(true);
     }
 
     /// <summary>
@@ -45,7 +63,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void OnSettingsButtonPress()
     {
-        //
+        dimPanel.SetActive(true);
     }
 
     /// <summary>
@@ -97,7 +115,7 @@ public class UIManager : MonoBehaviour
             gameController.inventory.RemoveItem(0, 1);
 
             //if item count is 0 or less, overlay button with partial alpha of black screen to dim.
-            toyButton.enabled = false;
+            if (!gameController.inventory.HasItem(0)) toyButton.enabled = false;
         }
     }
 
@@ -117,7 +135,7 @@ public class UIManager : MonoBehaviour
             gameController.inventory.RemoveItem(1, 1);
 
             //if item count is 0 or less, overlay button with partial alpha of black screen to dim.
-            foodButton.enabled = false;
+            if (!gameController.inventory.HasItem(1)) foodButton.enabled = false;
         }
     }
 
@@ -137,27 +155,53 @@ public class UIManager : MonoBehaviour
             gameController.inventory.RemoveItem(2, 1);
 
             //if item count is 0 or less, overlay button with partial alpha of black screen to dim.
-            soapButton.enabled = false;
+            if (!gameController.inventory.HasItem(2)) soapButton.enabled = false;
         }
     }
 
 
 
-    private void addToy()
+    public void OnAddToyButton()
     {
+        //do if money
         gameController.inventory.AddItem(0, 1);
         toyButton.enabled = true;
     }
 
-    private void addFood()
+    public void OnAddFoodButton()
     {
+        //do if money
         gameController.inventory.AddItem(1, 1);
         foodButton.enabled = true;
     }
 
-    private void addSoap()
+    public void OnAddSoapButton()
     {
+        //do if money
         gameController.inventory.AddItem(2, 1);
         soapButton.enabled = true;
+    }
+
+
+    public void OnExitShopButton()
+    {
+        dimPanel.SetActive(false);
+        shopPanel.SetActive(false);
+    }
+
+
+    void Update()
+    {
+        if (currentTimer < 1.0f)
+        {
+            currentTimer += Time.deltaTime;
+        }
+        else
+        {
+            currentTimer -= 1.0f;
+            affectionMeterText.SetText(petController.CurrentAffection.ToString());
+            hungerMeterText.SetText(petController.CurrentHunger.ToString());
+            energyMeterText.SetText(petController.CurrentEnergy.ToString());
+        }
     }
 }
