@@ -1,7 +1,12 @@
+using System.Collections;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    [SerializeField] private FloatData currency;
+    public float Currency { get => currency.Value; }
+
+    [Header("Items")]
     [SerializeField] private ItemList itemList;
 
     [SerializeField] private InventoryData inventoryData;
@@ -19,6 +24,8 @@ public class Inventory : MonoBehaviour
                 inventoryData.Value[item] = startingItemCount;
             }
         }
+
+        StartCoroutine(PaycheckCoroutine());
     }
 
     /// <summary>
@@ -30,7 +37,14 @@ public class Inventory : MonoBehaviour
     public bool AddItem(int itemID, int count)
     {
         GameObject item = GetItemByID(itemID);
-        if (item == null) return false;
+        var itemBase = item?.GetComponent<ItemBase>();
+        if (item == null || itemBase == null) return false;
+
+        if (currency.Value < itemBase.Cost * count)
+        {
+            return false; // Not enough currency to add the item
+        }
+        currency.Value -= itemBase.Cost * count;
 
         if (inventoryData.Value.ContainsKey(item))
         {
@@ -40,6 +54,7 @@ public class Inventory : MonoBehaviour
         {
             inventoryData.Value[item] = count;
         }
+
         return true;
     }
 
@@ -91,5 +106,14 @@ public class Inventory : MonoBehaviour
             return null;
         }
         return itemList.items[itemID];
+    }
+
+    private IEnumerator PaycheckCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(300f); // 5 minutes
+            currency.Value += 100f; // Add 10 currency every 5 minutes
+        }
     }
 }
