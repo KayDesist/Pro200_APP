@@ -61,6 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e247560ecbbc767459ad8c9c64716d85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  currency: {fileID: 11400000, guid: 47b97ed5932901e40a305c0ee3427761, type: 2}
   itemList: {fileID: 11400000, guid: 83adf12c3f389954e93de0e57e42f2c4, type: 2}
   inventoryData: {fileID: 11400000, guid: aacf002ea0fbbc8428beb24c2d4bfeb1, type: 2}
   startingItems:

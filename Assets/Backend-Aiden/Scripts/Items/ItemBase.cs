@@ -10,8 +10,12 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 [RequireComponent(typeof(Collider2D))]
 public class ItemBase : MonoBehaviour
 {
+    [Header("Item Information")]
     [SerializeField] private int itemID;
+    [SerializeField] private float cost;
+    public float Cost { get => cost; }
 
+    [Header("Item Usage")]
     [SerializeField] private List<RoomEnum> usableInRooms = new List<RoomEnum>();
 
     [SerializeField] private PetMeter[] affectedMeters;
