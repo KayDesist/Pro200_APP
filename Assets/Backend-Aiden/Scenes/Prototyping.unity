@@ -119,23 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &465834409 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5445350668864219193, guid: 252fd7794daf19241891399c3b335296, type: 3}
-  m_PrefabInstance: {fileID: 4763981752040618092}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &465834413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465834409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb0030881790458489f74ee25a73a366, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VoiceRecorder
 --- !u!1 &739743587
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,17 +263,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameController
       objectReference: {fileID: 0}
-    - target: {fileID: 8174304370032316212, guid: 252fd7794daf19241891399c3b335296, type: 3}
-      propertyPath: itemPrefab
-      value: 
-      objectReference: {fileID: 4837190880991364369, guid: b2a3191cffa04bc419c139a328a8a9a5, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5445350668864219193, guid: 252fd7794daf19241891399c3b335296, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 465834413}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 252fd7794daf19241891399c3b335296, type: 3}
 --- !u!1001 &5786725782317839170
 PrefabInstance:

@@ -1,7 +1,10 @@
+using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class PetController : MonoBehaviour
 {
+    [Header("Meter Management")]
     [SerializeField] private float hungerTimerBase = 60f; // Base time in seconds before hunger increases
     [SerializeField] private float energyTimerBase = 120f; // Base time in seconds before dnergy decreases
 
@@ -10,7 +13,7 @@ public class PetController : MonoBehaviour
 
     [SerializeField] private float maxHunger = 100f;
     [SerializeField] private float maxEnergy = 100f;
-    [SerializeField] private float maxAffection = 100f;
+    [SerializeField] private float maxAffection = 200f;
     [SerializeField] private float stinkThreshold = 50f;
 
     [SerializeField] private FloatData currentHunger;
@@ -19,6 +22,7 @@ public class PetController : MonoBehaviour
     [SerializeField] private FloatData currentStink;
 
     private bool isStinky = false;
+    private PetEmotion currentEmotion = PetEmotion.Neutral;
 
     public float MaxHunger { get => maxHunger; }
     public float MaxEnergy { get => maxEnergy; }
@@ -31,6 +35,15 @@ public class PetController : MonoBehaviour
 
     [SerializeField] private PetMeterAdjustEvent meterEvent;
 
+    [Header("Emotion Management")]
+    [SerializeField] private Sprite neutralSprite;
+    [SerializeField] private Sprite happySprite;
+    [SerializeField] private Sprite sadSprite;
+    [SerializeField] private Sprite angrySprite;
+    [SerializeField] private Sprite confusedSprite;
+
+    private SpriteRenderer spriteRenderer;
+
     private void OnEnable()
     {
         meterEvent.Subscribe(HandleMeterAdjust);
@@ -42,6 +55,8 @@ public class PetController : MonoBehaviour
     }
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
         hungerTimer = Random.Range(hungerTimerBase * 0.8f, hungerTimerBase * 1.2f);
         energyTimer = Random.Range(energyTimerBase * 0.8f, energyTimerBase * 1.2f);
     }
@@ -53,6 +68,10 @@ public class PetController : MonoBehaviour
         {
             currentHunger.Value = Mathf.Max(currentHunger - 1, 0);
             hungerTimer = Random.Range(hungerTimerBase * 0.8f, hungerTimerBase * 1.2f);
+            if (currentHunger / maxHunger < 0.2f)
+            {
+                SetEmotion(PetEmotion.Sad, true);
+            }
         }
 
         energyTimer -= Time.deltaTime;
@@ -107,4 +126,63 @@ public class PetController : MonoBehaviour
             isStinky = false;
         }
     }
+
+    public void SetEmotion(PetEmotion newEmotion, bool persistent = false)
+    {
+        currentEmotion = newEmotion;
+        switch (currentEmotion)
+        {
+            case PetEmotion.Happy:
+                currentAffection.Value = Mathf.Min(currentAffection + 5f, maxAffection);
+                break;
+            case PetEmotion.Sad:
+                currentAffection.Value = Mathf.Max(currentAffection - 5f, 0);
+                break;
+            case PetEmotion.Angry:
+                currentAffection.Value = Mathf.Max(currentAffection - 10f, 0);
+                break;
+        }
+
+        SetSprite();
+
+        if (!persistent) StartCoroutine(ResetEmotionCoroutine());
+    }
+
+    private void SetSprite()
+    {
+        switch (currentEmotion)
+        {
+            case PetEmotion.Neutral:
+                spriteRenderer.sprite = neutralSprite;
+                break;
+            case PetEmotion.Happy:
+                spriteRenderer.sprite = happySprite;
+                break;
+            case PetEmotion.Sad:
+                spriteRenderer.sprite = sadSprite;
+                break;
+            case PetEmotion.Angry:
+                spriteRenderer.sprite = angrySprite;
+                break;
+            case PetEmotion.Confused:
+                spriteRenderer.sprite = confusedSprite;
+                break;
+        }
+    }
+
+    private IEnumerator ResetEmotionCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+        currentEmotion = PetEmotion.Neutral;
+        SetSprite();
+    }
+}
+
+public enum PetEmotion
+{
+    Neutral,
+    Happy,
+    Sad,
+    Angry,
+    Confused
 }

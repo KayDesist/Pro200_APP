@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour
     public Inventory inventory { get => _inventory; }
     [SerializeField] private Inventory _inventory;
 
+    private VoiceRecorder voiceRecorder;
+
     void Awake()
     {
         EnhancedTouchSupport.Enable();
@@ -20,7 +22,24 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        voiceRecorder = GetComponent<VoiceRecorder>();
+
         CurrentRoom = startingRoom;
+    }
+
+    private void Update()
+    {
+        if (Touch.activeTouches.Count > 0)
+        {
+            if (Touch.activeTouches[0].phase == UnityEngine.InputSystem.TouchPhase.Began)
+            {
+                voiceRecorder.StartRecording();
+            }
+            else if (Touch.activeTouches[0].phase == UnityEngine.InputSystem.TouchPhase.Ended)
+            {
+                voiceRecorder.StopRecording();
+            }
+        }
     }
 
     public void ChangeRoom(RoomEnum newRoom)
