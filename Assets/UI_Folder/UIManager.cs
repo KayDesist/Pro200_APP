@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
     [Header("UI Panels")]
     [SerializeField] private GameObject dimPanel;
     [SerializeField] private GameObject shopPanel;
+    [SerializeField] private GameObject settingsPanel;
 
     [Header("UI Meter Text")]
     [SerializeField] private TextMeshProUGUI affectionMeterText;
@@ -64,6 +65,7 @@ public class UIManager : MonoBehaviour
     public void OnSettingsButtonPress()
     {
         dimPanel.SetActive(true);
+        settingsPanel.SetActive(true);
     }
 
     /// <summary>
@@ -164,6 +166,7 @@ public class UIManager : MonoBehaviour
     public void OnAddToyButton()
     {
         //do if money
+        //if(gameController.)
         gameController.inventory.AddItem(0, 1);
         toyButton.enabled = true;
     }
@@ -187,6 +190,12 @@ public class UIManager : MonoBehaviour
     {
         dimPanel.SetActive(false);
         shopPanel.SetActive(false);
+    }
+
+    public void OnExitSettingsButton()
+    {
+        dimPanel.SetActive(false);
+        settingsPanel.SetActive(false);
     }
 
 
