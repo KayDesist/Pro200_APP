@@ -8,6 +8,12 @@ public class GameController : MonoBehaviour
     [Header("Room Management")]
     public RoomEnum CurrentRoom { get; private set; }
     [SerializeField] private RoomEnum startingRoom;
+    [SerializeField] private SpriteRenderer backgroundRenderer;
+
+    [SerializeField] private Sprite bedRoomBackground;
+    [SerializeField] private Sprite kitchenBackground;
+    [SerializeField] private Sprite yardBackground;
+    [SerializeField] private Sprite bathroomBackground;
 
     [Header("Inventory Management")]
     public Inventory inventory { get => _inventory; }
@@ -45,5 +51,30 @@ public class GameController : MonoBehaviour
     public void ChangeRoom(RoomEnum newRoom)
     {
         CurrentRoom = newRoom;
+
+        if (backgroundRenderer == null)
+        {
+            Debug.LogWarning("Background Renderer is not assigned in GameController.");
+            return;
+        }
+
+        switch(newRoom)
+        {
+            case RoomEnum.Bedroom:
+                backgroundRenderer.sprite = bedRoomBackground;
+                break;
+            case RoomEnum.Kitchen:
+                backgroundRenderer.sprite = kitchenBackground;
+                break;
+            case RoomEnum.Yard:
+                backgroundRenderer.sprite = yardBackground;
+                break;
+            case RoomEnum.Bathroom:
+                backgroundRenderer.sprite = bathroomBackground;
+                break;
+            default:
+                Debug.LogWarning($"Unhandled room type: {newRoom}");
+                break;
+        }
     }
 }

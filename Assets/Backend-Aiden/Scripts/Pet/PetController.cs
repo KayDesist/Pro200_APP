@@ -66,7 +66,7 @@ public class PetController : MonoBehaviour
         hungerTimer -= Time.deltaTime;
         if (hungerTimer <= 0)
         {
-            currentHunger.Value = Mathf.Max(currentHunger - 1, 0);
+            currentHunger.Value = Mathf.Max(currentHunger - 5, 0);
             hungerTimer = Random.Range(hungerTimerBase * 0.8f, hungerTimerBase * 1.2f);
             if (currentHunger / maxHunger < 0.2f)
             {

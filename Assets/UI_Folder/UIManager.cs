@@ -79,7 +79,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void OnLivingRoomButtonPress()
     {
-        if (gameController.CurrentRoom != RoomEnum.MainRoom) gameController.ChangeRoom(RoomEnum.MainRoom);
+        if (gameController.CurrentRoom != RoomEnum.Bedroom) gameController.ChangeRoom(RoomEnum.Bedroom);
     }
 
     /// <summary>

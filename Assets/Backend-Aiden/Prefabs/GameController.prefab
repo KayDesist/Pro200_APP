@@ -48,6 +48,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameController
   startingRoom: 0
+  backgroundRenderer: {fileID: 0}
+  bedRoomBackground: {fileID: -5043528495432702037, guid: bc47140b14afb96419a304a7057cd355, type: 3}
+  kitchenBackground: {fileID: -7127815578132815392, guid: fa7ab64653be5ee4c9222ddb7716570a, type: 3}
+  yardBackground: {fileID: 7853610064735225787, guid: 1375313d10c3bfb4598b6084cc5edb4c, type: 3}
+  bathroomBackground: {fileID: -9059601078475292556, guid: e7d8f0149391721429331209a12e9807, type: 3}
   _inventory: {fileID: 7880893424501845089}
 --- !u!114 &7880893424501845089
 MonoBehaviour:
