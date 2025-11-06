@@ -38,6 +38,7 @@ public class PetController : MonoBehaviour
 
     [Header("Emotion Management")]
     [SerializeField] private Sprite neutralSprite;
+    [SerializeField] private Sprite stinkySprite;
     [SerializeField] private Sprite happySprite;
     [SerializeField] private Sprite sadSprite;
     [SerializeField] private Sprite angrySprite;
@@ -144,6 +145,7 @@ public class PetController : MonoBehaviour
                 }
                 break;
         }
+        SetSprite();
     }
 
     private void StinkUp(float stinkAmount)
@@ -152,6 +154,7 @@ public class PetController : MonoBehaviour
         if (currentStink > stinkThreshold)
         {
             isStinky = true;
+            SetSprite();
         }
     }
 
@@ -161,6 +164,7 @@ public class PetController : MonoBehaviour
         if (currentStink <= stinkThreshold)
         {
             isStinky = false;
+            SetSprite();
         }
     }
 
@@ -187,6 +191,12 @@ public class PetController : MonoBehaviour
 
     private void SetSprite()
     {
+        if (isStinky)
+        {
+            spriteRenderer.sprite = stinkySprite;
+            return;
+        }
+
         switch (currentEmotion)
         {
             case PetEmotion.Neutral:

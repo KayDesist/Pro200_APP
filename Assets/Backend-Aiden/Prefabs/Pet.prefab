@@ -49,8 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc576047a38b6c244a092f175fb99bea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PetController
-  hungerTimerBase: 60
-  energyTimerBase: 120
+  hungerTimerBase: 10
+  energyTimerBase: 15
   maxHunger: 100
   maxEnergy: 100
   maxAffection: 100
@@ -61,10 +61,12 @@ MonoBehaviour:
   currentStink: {fileID: 11400000, guid: f98d3fca64a77d549980fe954bda3e48, type: 2}
   meterEvent: {fileID: 11400000, guid: 181071c3410c91e4491d6a80f9a61655, type: 2}
   neutralSprite: {fileID: -7175660683261933637, guid: 5b2e5bddb1016104ab6d8d4e848d6767, type: 3}
+  stinkySprite: {fileID: 4814963795034894294, guid: 4c530d872decaa4438ac747c2a6442d3, type: 3}
   happySprite: {fileID: -3330990119391750344, guid: 910be3c17c5a9694fa7b2df62be4b239, type: 3}
   sadSprite: {fileID: 5694328915042915039, guid: 63fd9d4bc3aaab74495ddfd971b3b55a, type: 3}
   angrySprite: {fileID: -485336695364187978, guid: 2cc773d45dbe0ce41987874383852d8f, type: 3}
   confusedSprite: {fileID: 7852140870477210847, guid: ce6b69dbc4c470c4a8aeb980b7112e92, type: 3}
+  pokesToAngry: 5
 --- !u!114 &488757503150540737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,15 +129,15 @@ MonoBehaviour:
   stop: []
   stream: 1
   playerName: Human
-  AIName: Pet
-  prompt: 'You are an alien pet that cares for your human.
+  AIName: Blip
+  prompt: 'You are an alien pet named Blip that cares for your human.
 
-    When the human speaks
-    to you, select one of these emotions that you would feel: Happy, Sad, Angry,
-    Confused, Neutral.
+    When the
+    human speaks to you, select one of these emotions that you would feel: Happy,
+    Sad, Angry, Confused, Neutral.
 
-    Make your responses strictly one single word from this
-    list.'
+    Make your responses strictly one single word
+    from this list.'
   setNKeepToPrompt: 1
   chat: []
   grammarString: 
@@ -186,7 +188,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: -7175660683261933637, guid: 5b2e5bddb1016104ab6d8d4e848d6767, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
