@@ -65,6 +65,7 @@ public class UIManager : MonoBehaviour
     public void Start()
     {
         updateShopCosts();
+        UpdateInventoryButtonText();
 
         RoomEnum currentRoom = gameController.CurrentRoom;
         var roomEnums = (RoomEnum[])System.Enum.GetValues(typeof(RoomEnum));
@@ -185,6 +186,7 @@ public class UIManager : MonoBehaviour
 
             //if item count is 0 or less, overlay button with partial alpha of black screen to dim.
             if (!gameController.inventory.HasItem(0)) toyButton.enabled = false;
+            UpdateInventoryButtonText();
         }
     }
 
@@ -205,6 +207,7 @@ public class UIManager : MonoBehaviour
 
             //if item count is 0 or less, overlay button with partial alpha of black screen to dim.
             if (!gameController.inventory.HasItem(1)) foodButton.enabled = false;
+            UpdateInventoryButtonText();
         }
     }
 
@@ -225,6 +228,7 @@ public class UIManager : MonoBehaviour
 
             //if item count is 0 or less, overlay button with partial alpha of black screen to dim.
             if (!gameController.inventory.HasItem(2)) soapButton.enabled = false;
+            UpdateInventoryButtonText();
         }
     }
 
@@ -234,12 +238,16 @@ public class UIManager : MonoBehaviour
     {
         bool got_item = gameController.inventory.AddItem(0, 1);
         if (got_item) toyButton.enabled = true;
+
+        UpdateInventoryButtonText();
     }
 
     public void OnAddFoodButton()
     {
         bool got_item = gameController.inventory.AddItem(1, 1);
         if (got_item) foodButton.enabled = true;
+
+        UpdateInventoryButtonText();
     }
 
     public void OnAddSoapButton()
@@ -247,6 +255,23 @@ public class UIManager : MonoBehaviour
         //do if money
         bool got_item = gameController.inventory.AddItem(2, 1);
         if (got_item) soapButton.enabled = true;
+
+        UpdateInventoryButtonText();
+    }
+
+    private void UpdateInventoryButtonText()
+    {
+        var toyText = toyButton.GetComponentInChildren<TextMeshProUGUI>();
+        toyText.text = gameController.inventory.GetItemCount(0).ToString();
+        if (gameController.inventory.HasItem(0)) toyButton.enabled = true;
+
+        var foodText = foodButton.GetComponentInChildren<TextMeshProUGUI>();
+        foodText.text = gameController.inventory.GetItemCount(1).ToString();
+        if (gameController.inventory.HasItem(1)) toyButton.enabled = true;
+
+        var soapText = soapButton.GetComponentInChildren<TextMeshProUGUI>();
+        soapText.text = gameController.inventory.GetItemCount(2).ToString();
+        if (gameController.inventory.HasItem(2)) toyButton.enabled = true;
     }
 
 
@@ -276,6 +301,7 @@ public class UIManager : MonoBehaviour
             affectionMeterText.SetText($"{ (petController.CurrentAffection / petController.MaxAffection) * 100 }%");
             hungerMeterText.SetText($"{ (petController.CurrentHunger / petController.MaxHunger) * 100 }%");
             energyMeterText.SetText($"{ (petController.CurrentEnergy / petController.MaxEnergy) * 100 }%");
+            UpdateInventoryButtonText();
         }
     }
 

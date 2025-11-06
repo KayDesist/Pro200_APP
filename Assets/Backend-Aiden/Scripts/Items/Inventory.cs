@@ -112,8 +112,8 @@ public class Inventory : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(300f); // 5 minutes
-            currency.Value += 100f; // Add 10 currency every 5 minutes
+            yield return new WaitForSeconds(5f);
+            currency.Value += 5f; // Add 5 currency every 10 seconds
         }
     }
 }

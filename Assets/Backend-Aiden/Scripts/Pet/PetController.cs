@@ -1,12 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class PetController : MonoBehaviour
 {
     [Header("Meter Management")]
-    [SerializeField] private float hungerTimerBase = 60f; // Base time in seconds before hunger increases
-    [SerializeField] private float energyTimerBase = 120f; // Base time in seconds before dnergy decreases
+    [SerializeField] private float hungerTimerBase = 10f; // Base time in seconds before hunger increases
+    [SerializeField] private float energyTimerBase = 15f; // Base time in seconds before dnergy decreases
 
     private float hungerTimer;
     private float energyTimer;
@@ -44,6 +45,9 @@ public class PetController : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
+    [SerializeField] private int pokesToAngry = 5;
+    private int pokeCount = 0;
+
     private void OnEnable()
     {
         meterEvent.Subscribe(HandleMeterAdjust);
@@ -63,10 +67,20 @@ public class PetController : MonoBehaviour
 
     void Update()
     {
+        if (TouchOverPet())
+        {
+            pokeCount++;
+            if (pokeCount >= pokesToAngry)
+            {
+                SetEmotion(PetEmotion.Angry);
+                pokeCount = 0;
+            }
+        }
+
         hungerTimer -= Time.deltaTime;
         if (hungerTimer <= 0)
         {
-            currentHunger.Value = Mathf.Max(currentHunger - 5, 0);
+            currentHunger.Value = Mathf.Max(currentHunger - Random.Range(3, 8), 0);
             hungerTimer = Random.Range(hungerTimerBase * 0.8f, hungerTimerBase * 1.2f);
             if (currentHunger / maxHunger < 0.2f)
             {
@@ -77,9 +91,25 @@ public class PetController : MonoBehaviour
         energyTimer -= Time.deltaTime;
         if (energyTimer <= 0)
         {
-            currentEnergy.Value = Mathf.Max(currentEnergy - 1, 0);
+            currentEnergy.Value = Mathf.Max(currentEnergy - Random.Range(1, 2), 0);
             energyTimer = Random.Range(energyTimerBase * 0.8f, energyTimerBase * 1.2f);
         }
+    }
+
+    private bool TouchOverPet()
+    {
+        if (Touch.activeTouches.Count > 0)
+        {
+            var touch = Touch.activeTouches[0];
+            if (touch.phase != UnityEngine.InputSystem.TouchPhase.Began) return false;
+            Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.screenPosition);
+            Collider2D collider = GetComponent<Collider2D>();
+            if (collider.OverlapPoint(touchPosition))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void HandleMeterAdjust(PetMeterAdjust adjust)
