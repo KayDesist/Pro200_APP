@@ -23,6 +23,7 @@ public class ItemBase : MonoBehaviour
     [SerializeField] private PetMeterAdjustEvent petMeterEvent;
 
     private bool isOverPet = false;
+    private bool isDead = false;
 
     private Vector3 startPosition;
 
@@ -33,7 +34,7 @@ public class ItemBase : MonoBehaviour
 
     void Update()
     {
-        if (Touch.activeTouches.Count > 0)
+        if (!isDead && Touch.activeTouches.Count > 0)
         {
             var touch = Touch.activeTouches[0];
             if (touch.phase == UnityEngine.InputSystem.TouchPhase.Moved)
@@ -74,6 +75,7 @@ public class ItemBase : MonoBehaviour
         }
         else
         {
+            isDead = true;
             FindFirstObjectByType<GameController>().inventory.AddItem(itemID, 1);
 
             StartCoroutine(ResetPosition(0.1f));

@@ -15,6 +15,6 @@ MonoBehaviour:
   description: List of all items in the game. Item IDs correspond to their index
     in the array
   items:
-  - {fileID: 4837190880991364369, guid: b2a3191cffa04bc419c139a328a8a9a5, type: 3}
-  - {fileID: 4837190880991364369, guid: b2a3191cffa04bc419c139a328a8a9a5, type: 3}
-  - {fileID: 4837190880991364369, guid: b2a3191cffa04bc419c139a328a8a9a5, type: 3}
+  - {fileID: 7105260252274965005, guid: 5896b753d11e55c448a40327c58f25ed, type: 3}
+  - {fileID: 8538008547211605651, guid: 5d3218ec45b915548928355ab3d2514f, type: 3}
+  - {fileID: 9204961085367256622, guid: 9ffd844b3f706f34cab3ba72652701f3, type: 3}

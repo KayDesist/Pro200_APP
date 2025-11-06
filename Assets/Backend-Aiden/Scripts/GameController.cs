@@ -8,73 +8,47 @@ public class GameController : MonoBehaviour
     [Header("Room Management")]
     public RoomEnum CurrentRoom { get; private set; }
     [SerializeField] private RoomEnum startingRoom;
-    [SerializeField] private SpriteRenderer backgroundRenderer;
 
-    [SerializeField] private Sprite bedRoomBackground;
-    [SerializeField] private Sprite kitchenBackground;
-    [SerializeField] private Sprite yardBackground;
-    [SerializeField] private Sprite bathroomBackground;
+    [SerializeField] private GameObject bedroomBackground;
+    [SerializeField] private GameObject kitchenBackground;
+    [SerializeField] private GameObject yardBackground;
+    [SerializeField] private GameObject bathroomBackground;
+
+    private GameObject currentBackground;
 
     [Header("Inventory Management")]
     public Inventory inventory { get => _inventory; }
     [SerializeField] private Inventory _inventory;
 
-    private VoiceRecorder voiceRecorder;
-
     void Awake()
     {
         EnhancedTouchSupport.Enable();
-    }
-
-    void Start()
-    {
-        voiceRecorder = GetComponent<VoiceRecorder>();
-
-        CurrentRoom = startingRoom;
-    }
-
-    private void Update()
-    {
-        if (Touch.activeTouches.Count > 0)
-        {
-            if (Touch.activeTouches[0].phase == UnityEngine.InputSystem.TouchPhase.Began)
-            {
-                voiceRecorder.StartRecording();
-            }
-            else if (Touch.activeTouches[0].phase == UnityEngine.InputSystem.TouchPhase.Ended)
-            {
-                voiceRecorder.StopRecording();
-            }
-        }
+        ChangeRoom(startingRoom);
     }
 
     public void ChangeRoom(RoomEnum newRoom)
     {
         CurrentRoom = newRoom;
 
-        if (backgroundRenderer == null)
-        {
-            Debug.LogWarning("Background Renderer is not assigned in GameController.");
-            return;
-        }
-
-        switch(newRoom)
+        currentBackground?.SetActive(false);
+        switch (newRoom)
         {
             case RoomEnum.Bedroom:
-                backgroundRenderer.sprite = bedRoomBackground;
+                currentBackground = bedroomBackground;
                 break;
             case RoomEnum.Kitchen:
-                backgroundRenderer.sprite = kitchenBackground;
+                currentBackground = kitchenBackground;
                 break;
             case RoomEnum.Yard:
-                backgroundRenderer.sprite = yardBackground;
+                currentBackground = yardBackground;
                 break;
             case RoomEnum.Bathroom:
-                backgroundRenderer.sprite = bathroomBackground;
+                currentBackground = bathroomBackground;
                 break;
             default:
                 Debug.LogWarning($"Unhandled room type: {newRoom}");
                 break;
         }
+        currentBackground?.SetActive(true);
     }
 }

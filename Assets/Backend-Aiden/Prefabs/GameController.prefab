@@ -70,8 +70,8 @@ MonoBehaviour:
   itemList: {fileID: 11400000, guid: 83adf12c3f389954e93de0e57e42f2c4, type: 2}
   inventoryData: {fileID: 11400000, guid: aacf002ea0fbbc8428beb24c2d4bfeb1, type: 2}
   startingItems:
-  - {fileID: 4837190880991364369, guid: b2a3191cffa04bc419c139a328a8a9a5, type: 3}
-  startingItemCount: 10
+  - {fileID: 8538008547211605651, guid: 5d3218ec45b915548928355ab3d2514f, type: 3}
+  startingItemCount: 5
 --- !u!114 &2004490023652038852
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -84,7 +84,6 @@ public class PetController : MonoBehaviour
 
     private void HandleMeterAdjust(PetMeterAdjust adjust)
     {
-        Debug.Log($"Adjusting {adjust.meter} by {adjust.amount}");
         switch (adjust.meter)
         {
             case PetMeter.Hunger:
@@ -95,6 +94,14 @@ public class PetController : MonoBehaviour
                 break;
             case PetMeter.Affection:
                 currentAffection.Value = Mathf.Clamp(currentAffection + adjust.amount, 0, maxAffection);
+                if (adjust.amount > 0)
+                {
+                    SetEmotion(PetEmotion.Happy);
+                }
+                else
+                {
+                    SetEmotion(PetEmotion.Angry);
+                }
                 break;
             case PetMeter.Stink:
                 if (adjust.amount > 0)

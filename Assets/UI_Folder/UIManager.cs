@@ -21,14 +21,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button toyButton;
     [SerializeField] private Button foodButton;
     [SerializeField] private Button soapButton;
+    [SerializeField] private Button roomButton1;
+    [SerializeField] private Button roomButton2;
+    [SerializeField] private Button roomButton3;
+
+    private RoomEnum[] roomButtonMapping = new RoomEnum[3];
 
     [Header("Money Text Update")]
     [SerializeField] private TextMeshProUGUI toyCost;
     [SerializeField] private TextMeshProUGUI foodCost;
     [SerializeField] private TextMeshProUGUI soapCost;
     [SerializeField] private TextMeshProUGUI playerMoney;
-
-
 
     [Header("Item Examples - Temp")]
     [SerializeField] private GameObject soap;
@@ -57,9 +60,27 @@ public class UIManager : MonoBehaviour
     private const float GameTickTimer = 1.0f;
     private float currentTimer = 0;
 
+    private bool isRecording = false;
+
     public void Start()
     {
         updateShopCosts();
+
+        RoomEnum currentRoom = gameController.CurrentRoom;
+        var roomEnums = (RoomEnum[])System.Enum.GetValues(typeof(RoomEnum));
+
+        int currentIndex = 0;
+        foreach (var room in roomEnums)
+        {
+            if (room == currentRoom) continue;
+            if (currentIndex < roomButtonMapping.Length)
+            {
+                roomButtonMapping[currentIndex] = room;
+                ChangeRoomButtonValue(currentIndex, room);
+                currentIndex++;
+            }
+        }
+        currentTimer = GameTickTimer;
     }
 
     /// <summary>
@@ -74,7 +95,7 @@ public class UIManager : MonoBehaviour
 
     public void updateMoney()
     {
-        playerMoney.SetText(gameController.inventory.Currency.ToString());
+        playerMoney.SetText("$ " + gameController.inventory.Currency.ToString());
     }
 
 
@@ -101,31 +122,49 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void OnTalkButtonPress()
     {
-        //
+        if (!isRecording)
+        {
+            isRecording = true;
+            //start recording
+            gameController.GetComponent<VoiceRecorder>().StartRecording();
+        }
+        else
+        {
+            isRecording = false;
+            //stop recording
+            gameController.GetComponent<VoiceRecorder>().StopRecording();
+        }
     }
 
     /// <summary>
     /// If not in Living Room, move to Living Room
     /// </summary>
-    public void OnLivingRoomButtonPress()
+    public void OnRoomButtonPress(int roomNum)
     {
-        if (gameController.CurrentRoom != RoomEnum.Bedroom) gameController.ChangeRoom(RoomEnum.Bedroom);
+        var targetRoom = roomButtonMapping[roomNum];
+        if (gameController.CurrentRoom != targetRoom)
+        {
+            ChangeRoomButtonValue(roomNum, gameController.CurrentRoom);
+            gameController.ChangeRoom(targetRoom);
+        }
     }
 
-    /// <summary>
-    /// If not in Bathroom, move to Bathroom
-    /// </summary>
-    public void OnBathroomButtonPress()
+    private void ChangeRoomButtonValue(int roomNum, RoomEnum newRoom)
     {
-        if (gameController.CurrentRoom != RoomEnum.Bathroom) gameController.ChangeRoom(RoomEnum.Bathroom);
-    }
+        roomButtonMapping[roomNum] = newRoom;
 
-    /// <summary>
-    /// If not in Yard, move to Yard
-    /// </summary>
-    public void OnYardButtonPress()
-    {
-        if (gameController.CurrentRoom != RoomEnum.Yard) gameController.ChangeRoom(RoomEnum.Yard);
+        switch (roomNum)
+        {
+            case 0:
+                roomButton1.GetComponentInChildren<TextMeshProUGUI>().SetText(newRoom.ToString());
+                break;
+            case 1:
+                roomButton2.GetComponentInChildren<TextMeshProUGUI>().SetText(newRoom.ToString());
+                break;
+            case 2:
+                roomButton3.GetComponentInChildren<TextMeshProUGUI>().SetText(newRoom.ToString());
+                break;
+        }
     }
 
     /// <summary>
@@ -136,8 +175,8 @@ public class UIManager : MonoBehaviour
         if (gameController.inventory.HasItem(0) && !currentItem)
         {
             //instance the item.
-            GameObject temp = Instantiate(itemPrototype, new Vector3(500, -113, 0), Quaternion.identity);
-            temp.transform.localScale = new Vector3(50.0f, 50.0f, 50.0f);
+            GameObject temp = Instantiate(toy, new Vector3(5, -2, 0), Quaternion.identity);
+            //temp.transform.localScale = new Vector3(50.0f, 50.0f, 50.0f);
 
 
 
@@ -158,8 +197,8 @@ public class UIManager : MonoBehaviour
         {
             //instance the item being dragged.
             //instance the item.
-            GameObject temp = Instantiate(itemPrototype, new Vector3(500, -113, 0), Quaternion.identity);
-            temp.transform.localScale = new Vector3(50.0f, 50.0f, 50.0f);
+            GameObject temp = Instantiate(food, new Vector3(5, -2, 0), Quaternion.identity);
+            //temp.transform.localScale = new Vector3(50.0f, 50.0f, 50.0f);
 
             //then if the item is used on the pet, remove a count from the item.
             gameController.inventory.RemoveItem(1, 1);
@@ -178,8 +217,8 @@ public class UIManager : MonoBehaviour
         {
             //instance the item being dragged.
             //instance the item.
-            GameObject temp = Instantiate(itemPrototype, new Vector3(500, -113, 0), Quaternion.identity);
-            temp.transform.localScale = new Vector3(50.0f, 50.0f, 50.0f);
+            GameObject temp = Instantiate(soap, new Vector3(5, -2, 0), Quaternion.identity);
+            //temp.transform.localScale = new Vector3(50.0f, 50.0f, 50.0f);
 
             //then if the item is used on the pet, remove a count from the item.
             gameController.inventory.RemoveItem(2, 1);
@@ -194,20 +233,20 @@ public class UIManager : MonoBehaviour
     public void OnAddToyButton()
     {
         bool got_item = gameController.inventory.AddItem(0, 1);
-        if(got_item) toyButton.enabled = true;
+        if (got_item) toyButton.enabled = true;
     }
 
     public void OnAddFoodButton()
     {
         bool got_item = gameController.inventory.AddItem(1, 1);
-        if(got_item) foodButton.enabled = true;
+        if (got_item) foodButton.enabled = true;
     }
 
     public void OnAddSoapButton()
     {
         //do if money
         bool got_item = gameController.inventory.AddItem(2, 1);
-        if(got_item) soapButton.enabled = true;
+        if (got_item) soapButton.enabled = true;
     }
 
 
@@ -234,9 +273,9 @@ public class UIManager : MonoBehaviour
         else
         {
             currentTimer -= GameTickTimer;
-            affectionMeterText.SetText(petController.CurrentAffection.ToString());
-            hungerMeterText.SetText(petController.CurrentHunger.ToString());
-            energyMeterText.SetText(petController.CurrentEnergy.ToString());
+            affectionMeterText.SetText($"{ (petController.CurrentAffection / petController.MaxAffection) * 100 }%");
+            hungerMeterText.SetText($"{ (petController.CurrentHunger / petController.MaxHunger) * 100 }%");
+            energyMeterText.SetText($"{ (petController.CurrentEnergy / petController.MaxEnergy) * 100 }%");
         }
     }
 
