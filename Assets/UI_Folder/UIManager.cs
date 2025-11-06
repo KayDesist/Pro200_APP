@@ -24,6 +24,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button roomButton1;
     [SerializeField] private Button roomButton2;
     [SerializeField] private Button roomButton3;
+    [SerializeField] private Button talkButton;
+
+    [SerializeField] private Sprite talkButtonRecordingSprite;
+    [SerializeField] private Sprite talkButtonIdleSprite;
 
     private RoomEnum[] roomButtonMapping = new RoomEnum[3];
 
@@ -126,13 +130,13 @@ public class UIManager : MonoBehaviour
         if (!isRecording)
         {
             isRecording = true;
-            //start recording
+            talkButton.GetComponent<Image>().sprite = talkButtonRecordingSprite;
             gameController.GetComponent<VoiceRecorder>().StartRecording();
         }
         else
         {
             isRecording = false;
-            //stop recording
+            talkButton.GetComponent<Image>().sprite = talkButtonIdleSprite;
             gameController.GetComponent<VoiceRecorder>().StopRecording();
         }
     }
